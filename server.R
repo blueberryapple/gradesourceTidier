@@ -3,30 +3,37 @@ source("./justOnce.R")
 
 shinyServer(function(input, output) {
   
-  #uses input url to create table
-  gradeTable <- reactive({
+  #uses input url to create vector of cached tables
+  gradeTableVector <- reactive({
     validate(
       need(input$url != "", "")
     )
     
-    assessment <- input$categories
     urlOptions <- urlBank(input$url)
     
-    newUrl <-
+    urlOptions %>%
+      sapply(getGrades)
+  })
+  
+  #based on checkbox boolean
+  #selects te correct table to display and graph
+  gradeTable <- reactive({
+    assessment <- input$categories
+    
+    gradesWanted <-
     {
       if(assessment)
       {
-        urlOptions[2]
+        gradeTableVector()[[2]]
       }
       
       else
       {
-        urlOptions[1]
+        gradeTableVector()[[1]]
       }
     }
     
-    newUrl %>%
-      getGrades()
+    gradesWanted
   })
   
   #filters table based on secret number input
@@ -70,7 +77,8 @@ shinyServer(function(input, output) {
       as.character() %>%
       as.numeric() %>%
       hist(main = selectedGraph, xlab = xlabel, 
-           ylab = "Frequency", col = "skyblue", border = "white")
+           ylab = "Frequency", col = "skyblue", border = "white",
+           breaks = 10)
   })
   
   #outputs reactive select input
