@@ -15,7 +15,6 @@ getGrades <- function(url)
   standingsTable <- readHTMLTable(url, which = 4, 
                                   as.data.frame = TRUE)
   
-  #print(standingsTable)
   
   #get the table names
   htmlNodes <- htmlTreeParse(url, useInternalNodes = TRUE)
@@ -53,6 +52,7 @@ urlBank <- function(url)
                        [3]/tr/td/font/a[@href]/@href")
   
   lastIndex <- length(links)
+  url <- gsub(url, pattern = "index.html", replacement = "")
   categoriesUrl <- paste(url, links[1], sep = "")
   assessmentUrl <- paste(url, links[lastIndex], sep = "")
   
