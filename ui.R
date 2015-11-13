@@ -18,7 +18,7 @@ shinyUI(fluidPage(
   ),
   
   mainPanel(
-    tableOutput("grades"),
+    dataTableOutput("grades"),
     plotOutput("plotOverall")
   )
 ))

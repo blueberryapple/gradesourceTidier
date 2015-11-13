@@ -54,7 +54,16 @@ shinyServer(function(input, output) {
   })
   
   #outputs the table
-  output$grades <- renderTable({filteredTable()})
+  output$grades <- renderDataTable({
+    filteredTable()}, 
+    options = list(
+      scrollX = TRUE,
+      autoWidth = TRUE,
+      searching = FALSE,
+      dom = 't', 
+      rownames = FALSE,
+      ordering = FALSE
+  ))
   
   #outputs the graph
   output$plotOverall <- renderPlot({
